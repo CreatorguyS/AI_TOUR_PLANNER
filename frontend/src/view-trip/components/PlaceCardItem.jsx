@@ -14,7 +14,7 @@ function PlaceCardItem({ place }) {
       />
       <div>
         <h2 className="font-bold text-lg">{place.placeName}</h2>
-        <p className="text-sm text-gray-400">{place.details}</p>
+        <p className="text-sm text-gray-400">{place.placeDetails}</p>
 
 <h2 className="text-sm text-gray-300 mt-2">🕥 {place.travelTimeFromPrevious}</h2>
 <Button size='sm'><FaMapLocationDot /></Button>
