@@ -4,9 +4,10 @@ import './index.css'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CreateTrip from './create-trip'
-import Header from './components/custom/Header'
 import { Toaster } from './components/ui/toaster'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import Viewtrip from './view-trip/[tripId]'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/create-trip',
     element: <CreateTrip />
+  },
+  {
+    path:'/view-trip/:tripId',
+    element:<Viewtrip />
   }
 ])
 
@@ -22,7 +27,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <Toaster />
-    <Header />
+    {/* <Header /> */}
     <RouterProvider router={router} />
     </GoogleOAuthProvider>
   </StrictMode>

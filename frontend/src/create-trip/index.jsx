@@ -8,6 +8,7 @@ import { chatSession } from "@/service/AIMOdal";
 import axios from 'axios'
 import { doc, setDoc } from "firebase/firestore"; 
 import { db } from "@/service/firebaseConfig";
+import { getDoc } from "firebase/firestore";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 const CreateTrip = () => {
   const [place, setPlace] = useState(null);
@@ -25,6 +27,7 @@ const CreateTrip = () => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const [openDialog, setOpenDialog] = useState(false);
+  const navigate=useNavigate();
 
   const handleInputChange = (name, value) => {
     setFormData((prev) => ({
@@ -115,19 +118,35 @@ const CreateTrip = () => {
     }
   };
   
-  const SaveAiTrip=async(TripData)=>{
-    setLoading(true)
-    const docId=Date.now().toString()
-    const user=JSON.parse(localStorage.getItem("user"))
-    await setDoc(doc(db, "AItrips", docId), {
-     userSelection:formData,
-     tripData:JSON.parse(TripData),
-userEmail:user?.email,
-id:docId
-    });
-    setLoading(false)
-  }
 
+
+  const SaveAiTrip = async (TripData) => {
+    setLoading(true);
+    const docId = Date.now().toString();
+    const user = JSON.parse(localStorage.getItem("user"));
+  
+    const tripDocRef = doc(db, "AItrips", docId);
+  
+    // Save the trip
+    await setDoc(tripDocRef, {
+      userSelection: formData,
+      tripData: JSON.parse(TripData),
+      userEmail: user?.email,
+      id: docId,
+    });
+  
+    // ✅ Now fetch it again to confirm and log
+    const savedDoc = await getDoc(tripDocRef);
+    if (savedDoc.exists()) {
+      console.log("✅ Trip document saved:", savedDoc.data());
+    } else {
+      console.log("❌ No such document found.");
+    }
+  
+    setLoading(false);
+    navigate(`/view-trip/${docId}`);
+  };
+  
 const OnGetUserProfile=(tokenInfo)=>{
   axios.get(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenInfo.access_token}`,{
     headers: {
@@ -226,13 +245,13 @@ const OnGetUserProfile=(tokenInfo)=>{
       </div>
 
       {/* Loading UI */}
-      {/* {loading &&
-        // <div className="text-center my-6">
-        //   <p className="text-lg text-gray-600">
-        //     Hang tight! Crafting your perfect trip... ✈️🌍
-        //   </p>
-        // </div>
-      } */}
+      {loading &&
+        <div className="text-center my-6">
+          <p className="text-lg text-gray-600">
+            Hang tight! Crafting your perfect trip... ✈️🌍
+          </p>
+        </div>
+      }
 
       {/* Submit Button */}
       <div className="my-10 justify-end flex">
