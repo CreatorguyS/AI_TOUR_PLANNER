@@ -9,7 +9,7 @@ function PlacesToVisit({ trip }) {
       <div className="space-y-8">
         {trip.tripData?.itinerary.map((dayPlan, index) => (
           <div key={index}>
-            <h3 className="font-medium text-xl text-white mb-3">{dayPlan.day}</h3>
+            <h3 className="font-medium text-xl text-white mb-3">Day {dayPlan.day}</h3>
             {/* Responsive grid for places */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {dayPlan.dailyPlan.map((place, idx) => (
