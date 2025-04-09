@@ -7,11 +7,12 @@ import InfoSection from '../components/InfoSection'
 import Hotels from '../components/Hotels'
 import PlacesToVisit from '../components/PlacesToVisit'
 import Footer from '../components/Footer'
+
 const Viewtrip = () => {
   const { toast } = useToast();
   const { tripId } = useParams();
  const [tripData, setTripData] = useState([])
-console.log(tripData)
+// console.log(tripData)
   useEffect(() => {
     tripId && GetTripData();
   }, [tripId]);
@@ -21,10 +22,10 @@ console.log(tripData)
 
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
+      // console.log("Document data:", docSnap.data());
       setTripData(docSnap.data())
     } else {
-      console.log("No such document!");
+      // console.log("No such document!");
       toast({
         title: "Error",
         description: "Trip not found",
@@ -32,7 +33,7 @@ console.log(tripData)
       });
     }
   };
-console.log("trip is ",tripData.tripData)
+// console.log("trip is ",tripData.tripData)
   if (!tripData || !tripData.tripData) {
     return <p className='text-gray-500 italic mt-4'>Loading...</p>;
   }
