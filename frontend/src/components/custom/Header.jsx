@@ -52,8 +52,14 @@ const Header = () => {
       <div className="flex items-center gap-3">
         {user ? 
         <div>
+      <a href="/create-trip">
+         
+         <Button variant="outline" className="rounded-full">+ Create Trip</Button></a> 
+
          <a href="/my-trips">
+         
         <Button variant="outline" className="rounded-full">My trips</Button></a> 
+
         <Popover>
   <PopoverTrigger>    <img src={user?.picture}   className='h-[35px] w-[35px] rounded full'alt="user picture" /></PopoverTrigger>
   <PopoverContent><h2 className="cursor-pointer"
