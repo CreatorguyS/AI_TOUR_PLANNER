@@ -37,32 +37,33 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
       ],
     });
   
-    const result = await chatSession.sendMessage("Hello");
-    const candidates = result.response.candidates;
-    
-    for (let candidate_index = 0; candidate_index < candidates.length; candidate_index++) {
-      const parts = candidates[candidate_index].content.parts;
-      
-      for (let part_index = 0; part_index < parts.length; part_index++) {
-        const part = parts[part_index];
-        
-        if (part.inlineData) {
-          const data = part.inlineData.data; // base64
-          const mimeType = part.inlineData.mimeType;
-          const extension = mimeType.split("/")[1];
-    
-          const blob = new Blob([Uint8Array.from(atob(data), c => c.charCodeAt(0))], { type: mimeType });
-          const url = URL.createObjectURL(blob);
-    
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `output_${candidate_index}_${part_index}.${extension}`;
-          a.click();
-    
-          URL.revokeObjectURL(url);
-        } else if (part.text) {
-          console.log("Text response:", part.text);
-        }
-      }    
-    }
+  (async () => {
+  const result = await chatSession.sendMessage("Hello");
+  const candidates = result.response.candidates;
 
+  for (let candidate_index = 0; candidate_index < candidates.length; candidate_index++) {
+    const parts = candidates[candidate_index].content.parts;
+
+    for (let part_index = 0; part_index < parts.length; part_index++) {
+      const part = parts[part_index];
+
+      if (part.inlineData) {
+        const data = part.inlineData.data; // base64
+        const mimeType = part.inlineData.mimeType;
+        const extension = mimeType.split("/")[1];
+
+        const blob = new Blob([Uint8Array.from(atob(data), c => c.charCodeAt(0))], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `output_${candidate_index}_${part_index}.${extension}`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+      } else if (part.text) {
+        console.log("Text response:", part.text);
+      }
+    }
+  }
+})();
