@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { chatSession } from "@/service/AIMOdal";
+import { chatSession } from "@/service/AIModal";
 import axios from 'axios'
 import { doc, setDoc } from "firebase/firestore"; 
 import { db } from "@/service/firebaseConfig";
